@@ -1,0 +1,20 @@
+package com.kh.product.service;
+
+import static com.kh.common.JDBCTemplate.getConnection;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+
+import com.kh.product.model.dao.ProductDAO;
+import com.kh.product.model.exception.ProductException;
+import com.kh.product.model.vo.ProductIO;
+
+public class ProductService {
+
+	public ArrayList<ProductIO> sselectAll() throws ProductException {
+		Connection conn = getConnection();
+		ArrayList<ProductIO> list = new ProductDAO().selectAll(conn);
+		return list;
+	}
+
+}

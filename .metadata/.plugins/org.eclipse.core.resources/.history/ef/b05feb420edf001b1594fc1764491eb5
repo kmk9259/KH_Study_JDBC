@@ -1,0 +1,133 @@
+package com.kh.member.controller;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.kh.member.model.exception.MemberException;
+import com.kh.member.model.vo.Member;
+import com.kh.member.service.MemberService;
+import com.kh.member.view.MemberMenu;
+
+public class MemberController {
+	//view와 dao(db연결)을 연결해주는 객체
+	//view <-> controller <-> dao <-> db
+
+	public void selectAll() {
+		MemberMenu menu = new MemberMenu();
+		ArrayList<Member> list;
+		try {
+			list = new MemberService().selectAll();
+			if(!list.isEmpty())
+			{
+				menu.displayMemberList(list);
+			}
+			else
+				menu.displayNoData();
+				
+		} catch (MemberException e) {
+			menu.displayError("회원전체조회 실패, 관리자에게 문의하세요.");
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+	public void selectOne(String memberId) {
+		MemberMenu menu = new MemberMenu();
+		Member m;
+		try {
+			m = new MemberService().selectOne(memberId);
+			if(m !=null)
+				menu.displayMember(m);
+			else
+				menu.displayNoData();
+		} catch (MemberException e) {
+			menu.displayError("회원전체조회 실패, 관리자에게 문의하세요.");
+			System.out.println(e.getMessage());
+		}
+		
+		
+		
+	}
+
+	public void insertMember(Member m) {
+		int result;
+		try {
+			result = new MemberService().insertMember(m);
+			if(result >0)
+			{
+				new MemberMenu().displaySuccess("회원가입성공");
+			}
+			
+		} catch (MemberException e) {
+			new MemberMenu().displayError("회원가입 실패, 관리자에게 문의하세요.");
+			System.out.println(e.getMessage());
+		}
+		
+		
+	}
+
+	public void updateMember(Member m, String memberId) {
+		int result;
+		try {
+			result = new MemberService().updateMember(m,memberId);
+			if(result >0)
+			{
+				new MemberMenu().displaySuccess("회원정보 변경 성공");
+			}
+			else
+				new MemberMenu().displayError("회원정보 변경 실패");
+			
+		} catch (MemberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	public void deleteMember(String memberId) {
+		int result;
+		try {
+			result = new MemberService().deleteMember(memberId);
+			if(result >0)
+			{
+				new MemberMenu().displaySuccess("회원 탈퇴 성공");
+			}
+			else
+				new MemberMenu().displayError("회원 탈퇴 실패");
+		} catch (MemberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+	public void exitProgram() {
+		new MemberService().exitProgram();
+		
+	}
+
+	public void selectAllDeleteMember() {
+		MemberMenu menu = new MemberMenu();
+		List<Member> list;
+		try {
+			list = new MemberService().selectAllDeleteMember();
+			if(!list.isEmpty())
+				menu.displayMemberList(list);
+			else
+				menu.displayError("해당되는 데이터가 없습니다.");
+		} catch (MemberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+	
+
+}

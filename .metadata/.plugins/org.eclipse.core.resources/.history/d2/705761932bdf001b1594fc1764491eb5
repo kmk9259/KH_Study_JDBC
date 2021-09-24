@@ -1,0 +1,108 @@
+package com.kh.product.view;
+
+import java.util.List;
+import java.util.Scanner;
+
+import com.kh.product.controller.ProductController;
+import com.kh.product.model.dao.ProductDAO;
+import com.kh.product.model.vo.ProductIO;
+
+public class ProductMenu {
+	private static Scanner sc = new Scanner(System.in);
+	private ProductController pc = new ProductController();
+	private ProductDAO pd = new ProductDAO();
+	
+	public void mainMenu()
+	{
+		do {
+			System.out.println("\n***************상품관리프로그램***************");
+			System.out.println("1. 전체 조회");	
+			System.out.println("2. 상품 추가");
+			System.out.println("3. 상품 수정");
+			System.out.println("4. 상품 삭제");
+			System.out.println("5. 상품 검색");
+			System.out.println("6. 상품 입출고 메뉴");
+			System.out.println("9. 프로그램 끝내기");
+			System.out.println("번호 선택 : ");
+			
+			int choice = sc.nextInt();
+			
+			switch(choice) {
+			case 1:
+				pc.selectAll();
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				
+				break;
+			case 4:
+				
+				break;
+			case 5:
+				
+				break;
+			case 6:
+				IOMenu();
+				break;			
+			case 9:
+				System.out.println("정말로 끝내시겠습니까? (y/n)");
+				sc.nextLine();
+				char end = sc.nextLine().charAt(0);
+				if (end =='y')
+				{
+					//mc.exitProgram();
+					return;
+				}
+					
+				break;
+			default:
+				System.out.println("번호를 잘못 입력하셨습니다.");
+			}
+			
+		}while(true);
+	}
+	public void IOMenu()
+	{
+		System.out.println("=====입출고 메뉴 =====");
+		System.out.println("1. 전체 입출고 내역 조회");
+		System.out.println("2. 입고 내역만 조회");
+		System.out.println("3. 출고 내역만 조회");
+		System.out.println("4. 상품 입고");
+		System.out.println("5. 상품 출고 ");
+		int num = sc.nextInt();
+		switch(num){
+		case 1:
+			pc.selectAll2();
+			break;
+		case 2:
+			pc.selectone();
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		default :
+			System.out.println("번호 잘못 입력 이전 메뉴로 돌아갑니다.");
+			return;
+		}
+		
+	}
+
+	public void displayProductList(List<ProductIO> list) {
+		System.out.println("==========================입출고 리스트==========================");
+		System.out.println("상품ID\t\t상품명\t  가격\부가설명\t재고수량");
+		for(ProductIO p :list)
+			System.out.println(p.product_stock_info());
+		
+	}
+
+	public void displayNoData() {
+		System.out.println("조회된 데이터가 없습니다.");
+		
+	}
+
+}

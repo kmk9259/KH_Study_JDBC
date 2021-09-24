@@ -1,0 +1,129 @@
+package com.kh.product.controller;
+
+import java.util.ArrayList;
+
+import com.kh.product.model.exception.ProductException;
+import com.kh.product.model.vo.ProductIO;
+import com.kh.product.service.ProductService;
+import com.kh.product.view.ProductMenu;
+
+public class ProductController {
+	public void selectAll() {
+		ProductMenu menu = new ProductMenu();
+		ArrayList<ProductIO> list;
+		try {
+			list = new ProductService().selectAll();
+			if(!list.isEmpty())
+				menu.displayProductList(list);
+			else
+				menu.displayNoData();
+		} catch (ProductException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void insertProduct(ProductIO p) {
+		int result;
+		try {
+			result = new ProductService().insertProduct(p);
+			if(result >0)
+			{
+				new ProductMenu().displaySuccess("상품 추가 성공");
+			}
+				
+		} catch (ProductException e) {
+			new ProductMenu().displayError("상품 추가 실패");
+			
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	public void updateProduct(ProductIO p, String id) {
+		int result;
+		try {
+			result = new ProductService().updateProduct(p,id);
+			if(result >0)
+			{
+				new ProductMenu().displaySuccess("상품 수정 성공");
+			}
+				
+		} catch (ProductException e) {
+			new ProductMenu().displayError("상품 수정 실패");
+			
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	public void deleteProduct(String id) {
+		int result;
+		try {
+			result = new ProductService().deleteProduct(id);
+			if(result >0)
+			{
+				new ProductMenu().displaySuccess("상품 삭제 성공");
+			}
+				
+		} catch (ProductException e) {
+			new ProductMenu().displayError("상품 삭제 실패");
+			
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	public void searchProduct(String pName) {
+		int result;
+		try {
+			result = new ProductService().searchProduct(pName);
+			if(result >0)
+			{
+				new ProductMenu().displaySuccess("상품 검색 성공");
+			}
+				
+		} catch (ProductException e) {
+			new ProductMenu().displayError("상품 검색 실패");
+			
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	
+	public void selectAll2() {
+		ProductMenu menu = new ProductMenu();
+		ArrayList<ProductIO> list;
+		try {
+			list = new ProductService().selectAll2();
+			if(!list.isEmpty())
+				menu.displayProductList(list);
+			else
+				menu.displayNoData();
+		} catch (ProductException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void selectone() {
+		ProductMenu menu = new ProductMenu();
+		ArrayList<ProductIO> list;
+		try {
+			list = new ProductService().selectone();
+			if(!list.isEmpty())
+				menu.displayProductList(list);
+			else
+				menu.displayNoData();
+		} catch (ProductException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+
+
+	
+
+	
+
+}

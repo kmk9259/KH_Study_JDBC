@@ -1,0 +1,43 @@
+package com.kh.product.controller;
+
+import java.util.ArrayList;
+
+import com.kh.product.model.exception.ProductException;
+import com.kh.product.model.vo.ProductIO;
+import com.kh.product.service.ProductService;
+import com.kh.product.view.ProductMenu;
+
+public class ProductController {
+	
+	
+	public void selectAll() {
+		ProductMenu menu = new ProductMenu();
+		ArrayList<ProductIO> list;
+		try {
+			list = new ProductService().selectAll();
+			if(!list.isEmpty())
+				menu.displayProductList(list);
+			else
+				menu.displayNoData();
+		} catch (ProductException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void selectone() {
+		ProductMenu menu = new ProductMenu();
+		ArrayList<ProductIO> list;
+		try {
+			list = new ProductService().selectone();
+			if(!list.isEmpty())
+				menu.displayProductList(list);
+			else
+				menu.displayNoData();
+		} catch (ProductException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

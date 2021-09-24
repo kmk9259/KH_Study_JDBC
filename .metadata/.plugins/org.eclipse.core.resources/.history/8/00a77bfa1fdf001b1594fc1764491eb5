@@ -1,0 +1,23 @@
+package com.kh.product.controller;
+
+import java.util.ArrayList;
+
+import com.kh.product.model.vo.ProductIO;
+import com.kh.product.service.ProductService;
+import com.kh.product.view.ProductMenu;
+
+public class ProductController {
+	ProductMenu menu = new ProductMenu();
+	
+	public void selectAll() {
+		ArrayList<ProductIO> list;
+		list = new ProductService().selectAll();
+		
+		if(!list.isEmpty())
+			menu.displayProductList(list);
+		else
+			menu.displayNoData();
+		
+	}
+
+}

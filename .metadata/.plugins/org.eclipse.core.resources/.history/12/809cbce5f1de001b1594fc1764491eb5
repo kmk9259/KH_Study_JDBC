@@ -1,0 +1,325 @@
+package com.kh.member.model.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import com.kh.member.model.vo.Member;
+
+/* 1.Connection 객체연결하기 
+ * 2.Statement 객체 생성하기 
+ * 3.ResultSet 객체 생성하기 
+ * 4.Sql작성하기 
+ * 5.ResultSet  결과담기 
+ * 6.list 에 객체 하나씩 담기 
+ * 7.close 하기 (자원반납 - 생성의 역순)
+ */
+
+public class MemberDAO {
+
+	public ArrayList<Member> selectAll() {
+		ArrayList<Member> list = null;
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String sql = "SELECT * FROM MEMBER";
+		
+		//1.JDBC driver 등록
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			System.out.println("드라이버 등록 성공");
+			
+			//2. 등록된 클래스를 이용해서 db 연결
+			// 드라이버타입@ip주소:포트번호:db이름(SID)
+			// orcl:사용자정의설치 , thin : 자동으로 설치 //ip주소 -> localhost 로 변경해도됨
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","STUDENT","STUDENT");
+			
+			System.out.println("conn="+conn);  //성공하면 connection 값, 실패하면 null값
+			
+			//3. 쿼리문을 실행할 statement 객체 생성
+			stmt = conn.createStatement();
+			
+			//4. 쿼리문 전송, 실행결과를 ResultSet 으로 받기
+			rset = stmt.executeQuery(sql);
+			
+			//5. 받을 결과 값을 객체에 옮겨서 저장하기
+			list = new ArrayList<Member>();
+			
+			while(rset.next())//값이 있으면 true
+			{
+				Member m = new Member();
+				
+				m.setUserId(rset.getString("USERID"));
+				m.setPassword(rset.getString("PASSWORD"));
+				m.setUserName(rset.getString("USERNAME"));
+				m.setGender(rset.getString("GENDER"));
+				m.setAge(rset.getInt("AGE"));
+				m.setEmail(rset.getString("EMAIL"));
+				m.setPhone(rset.getString("PHONE"));
+				m.setAddress(rset.getString("ADDRESS"));
+				m.setHobby(rset.getString("HOBBY"));
+				m.setEnrollDate(rset.getDate("ENROLLDATE"));
+				
+				list.add(m);
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				rset.close();
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	public Member selectOne(String memberId) {
+	      Member m = null;
+	      Connection conn = null;
+	      //Statement stmt = null;
+	      PreparedStatement pstmt= null;
+	      ResultSet rset = null;
+	      
+	      String sql = "SELECT * FROM MEMBER WHERE USERID = ?";
+	      
+	      
+	      try {
+	         Class.forName("oracle.jdbc.OracleDriver");
+	         System.out.println("드라이버 등록 성공");
+	         
+	         //2.등록된 클래스를 이용해서 db연결
+	         // 드라이버타입@ip주소:포트번호:db이름(SID)
+	         // orcl:사용자정의설치 , thin : 자동으로 설치 //ip주소 -> localhost 로 변경해도됨
+	         conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","STUDENT","STUDENT");
+	      
+	         System.out.println("conn="+conn);  //성공하면 connection값, 실패하면 null값
+	         
+	         //3. 쿼리문을 실행할 prepareStatement객체생성
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         //4. 쿼리문 전송, 실행결과를 resultset으로 받기
+	         rset = stmt.executeQuery(sql);
+	         
+	         if(rset.next()) {
+	            m=new Member();
+	            
+	            m.setUserId(rset.getString("USERID"));
+	            m.setPassword(rset.getString("PASSWORD"));
+	            m.setUserName(rset.getString("USERNAME"));
+	            m.setGender(rset.getString("GENDER"));
+	            m.setAge(rset.getInt("AGE"));
+	            m.setEmail(rset.getString("EMAIL"));
+	            m.setPhone(rset.getString("PHONE"));
+	            m.setAddress(rset.getString("ADDRESS"));
+	            m.setHobby(rset.getString("HOBBY"));
+	            m.setEnrollDate(rset.getDate("ENROLLDATE"));
+	         }
+	      } catch (ClassNotFoundException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      }finally {
+	         
+	         try {
+	            rset.close();
+	            stmt.close();
+	            conn.close();
+	         } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         }
+	         
+	      }
+	      
+	      return m;
+	   }
+	public int insertMember(Member m) {
+		int result =0;
+		Connection conn = null;
+	    Statement stmt = null;
+	    ResultSet rset = null;
+	    
+	    String sql = "INSERT INTO MEMBER VALUES ("
+	    			+"'"+m.getUserId()+"' ,"
+	    			+"'"+m.getPassword()+"' ,"
+	    			+"'"+m.getUserName()+"' ,"
+	    			+"'"+m.getGender()+"' ,"
+	    			+m.getAge()+" ,"
+					+"'"+m.getEmail()+"' ,"
+	    			+"'"+m.getPhone()+"' ,"
+	    			+"'"+m.getAddress()+"' ,"
+	    			+"'"+m.getHobby()+"',"
+	    			+"sysdate ) ";
+	    
+	    try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			
+			System.out.println("드라이버 등록 성공");
+	        
+	        //2.등록된 클래스를 이용해서 db연결
+	        // 드라이버타입@ip주소:포트번호:db이름(SID)
+	        // orcl:사용자정의설치 , thin : 자동으로 설치 //ip주소 -> localhost 로 변경해도됨
+	        conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","STUDENT","STUDENT");
+	     
+	        System.out.println("conn="+conn);  //성공하면 connection값, 실패하면 null값
+	        
+	        //3. 쿼리문을 실행할 statement객체생성
+	        stmt = conn.createStatement();
+	        
+	        conn.setAutoCommit(false); 
+	        result = stmt.executeUpdate(sql); //처리한 행의 갯수리턴
+	        
+	        if(result >0)
+	        	conn.commit();	//적용
+	        else
+	        		conn.rollback();//되돌리기
+	        
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+	         
+	         try {
+	            stmt.close();
+	            conn.close();
+	         } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         }
+	         
+	      }
+        
+		return result;
+	}
+	public int updateMember(Member m, String memberId) {
+		int result =0;
+		Connection conn = null;
+	    Statement stmt = null;
+	    ResultSet rset = null;
+	    
+	    String sql = "UPDATE MEMBER SET PASSWORD = "
+	    			+"'"+m.getPassword()+"' , EMAIL ="
+					+"'"+m.getEmail()+"' , PHONE ="
+	    			+"'"+m.getPhone()+"' ,ADDRESS ="
+	    			+"'"+m.getAddress()+"'"
+	    			+"WHERE USERID = "
+	    			+"'"+memberId+"'";
+	    
+	    try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			
+			System.out.println("드라이버 등록 성공");
+	        
+	        //2.등록된 클래스를 이용해서 db연결
+	        // 드라이버타입@ip주소:포트번호:db이름(SID)
+	        // orcl:사용자정의설치 , thin : 자동으로 설치 //ip주소 -> localhost 로 변경해도됨
+	        conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","STUDENT","STUDENT");
+	     
+	        System.out.println("conn="+conn);  //성공하면 connection값, 실패하면 null값
+	        
+	        //3. 쿼리문을 실행할 statement객체생성
+	        stmt = conn.createStatement();
+	        
+	        conn.setAutoCommit(false); 
+	        result = stmt.executeUpdate(sql); //처리한 행의 갯수리턴
+	        
+	        if(result >0)
+	        	conn.commit();	//적용
+	        else
+	        		conn.rollback();//되돌리기
+	        
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+	         
+	         try {
+	            stmt.close();
+	            conn.close();
+	         } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         }
+	         
+	      }
+        
+		return result;
+		
+		
+	}
+	public int deleteMember(String memberId) {
+		int result =0;
+		Connection conn = null;
+	    Statement stmt = null;
+	    ResultSet rset = null;
+	    
+	    String sql = "DELETE FROM MEMBER "
+	    			+"WHERE USERID = "
+	    			+"'"+memberId+"'";
+	    
+	    try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			
+			System.out.println("드라이버 등록 성공");
+	        
+	        //2.등록된 클래스를 이용해서 db연결
+	        // 드라이버타입@ip주소:포트번호:db이름(SID)
+	        // orcl:사용자정의설치 , thin : 자동으로 설치 //ip주소 -> localhost 로 변경해도됨
+	        conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","STUDENT","STUDENT");
+	     
+	        System.out.println("conn="+conn);  //성공하면 connection값, 실패하면 null값
+	        
+	        //3. 쿼리문을 실행할 statement객체생성
+	        stmt = conn.createStatement();
+	        
+	        conn.setAutoCommit(false); 
+	        result = stmt.executeUpdate(sql); //처리한 행의 갯수리턴
+	        
+	        if(result >0)
+	        	conn.commit();	//적용
+	        else
+	        		conn.rollback();//되돌리기
+	        
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+	         
+	         try {
+	            stmt.close();
+	            conn.close();
+	         } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         }
+	         
+	      }
+        
+		return result;
+		
+	}
+}

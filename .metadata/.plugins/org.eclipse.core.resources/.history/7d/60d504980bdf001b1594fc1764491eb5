@@ -1,0 +1,3 @@
+#query.properties
+selectAll = SELECT * FROM MEMBER
+selectOne = SELECT * FROM MEMBER WHERE USERID = ?

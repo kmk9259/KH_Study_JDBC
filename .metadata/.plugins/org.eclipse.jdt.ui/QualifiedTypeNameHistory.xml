@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.sql.DriverManager"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Member"/>
+<fullyQualifiedTypeName name="com.kh.member.model.vo.Member"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+<fullyQualifiedTypeName name="com.kh.common.JDBCTemplate"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="com.kh.member.service.MemberService"/>
+<fullyQualifiedTypeName name="com.kh.member.model.dao.MemberDAO"/>
+<fullyQualifiedTypeName name="com.kh.member.view.MemberMenu"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
+<fullyQualifiedTypeName name="java.io.FileReader"/>
+<fullyQualifiedTypeName name="com.kh.member.model.exception.MemberException"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="com.kh.product.controller.ProductController"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="com.kh.product.model.dao.ProductDAO"/>
+<fullyQualifiedTypeName name="com.kh.product.service.ProductService"/>
+<fullyQualifiedTypeName name="com.kh.product.model.exception.ProductException"/>
+<fullyQualifiedTypeName name="com.kh.product.view.ProductMenu"/>
+<fullyQualifiedTypeName name="com.kh.product.model.vo.ProductIO"/>
+</qualifiedTypeNameHistroy>
